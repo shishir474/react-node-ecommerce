@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
-import { getCategories, getProducts } from "./apiCore"
+import { getCategories, getProducts, list } from "./apiCore"
 import Card from "./Card"
+
 
 const Search = () => {
     const [data, setData] = useState({
@@ -28,12 +29,28 @@ const Search = () => {
         loadCategories();
     }, []);
 
-    const searchSubmit = () => {
+    const searchSubmit = (e) => {
+        e.preventDefault();
+       // console.log(category, search);
+       if (search){
+            list({search: search || undefined, category: category }).then((res) => { 
+                if (res.error){
+                    console.log(res.error);
+                }
+                else{
+                    console.log(res)
+                    setData({...data, results: res, searched: true});
+                    // console.log('results', results)
+                }
+            })
+       }
+   
+
 
     }
     
-    const handleChange = () => {
-
+    const handleChange = name => e => {
+        setData({...data, [name]: e.target.value, searched: false});
     }
 
     const searchForm = () => (
@@ -63,10 +80,23 @@ const Search = () => {
         </form>
     );
 
+    const searchedProducts = (results = []) => {
+        return (
+            <div className="row">
+                {results.map((product,i) => (<Card key={i} product={product}/>))}
+            </div>
+        )
+    }
+
     return (
         // <h2> Search bar </h2>
         <div className="row">
-            <div className="container mb-3">{searchForm()}</div>
+            <div className="container mb-3">
+                {searchForm()}
+            </div>
+            <div className="container-fluid mb-3">
+                {searchedProducts(results)}
+            </div>
         </div>
     )
 }
