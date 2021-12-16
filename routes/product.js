@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { requireSignin, isAuth, isAdmin } = require('../controllers/auth');
 const {userById} = require('../controllers/user');
-const {create, productById, read, remove, update, list, listRelated, listCategories, listBySearch, photo} = require('../controllers/product');
+const {create, productById, read, remove, update, list, listSearch, listRelated, listCategories, listBySearch, photo} = require('../controllers/product');
 
 
 // if there is a userId in route, userById middleware sets the user in req.profile
@@ -19,6 +19,7 @@ router.put('/product/:productId/:userId', requireSignin, isAuth, isAdmin, update
 //  sell => '/products?sortBy=sold&order=desc&limit=3'
 //  arrivel -> '/products?sortBy=createdAt&order=desc&limit=3'
 router.get('/products', list);
+router.get('/products/search', listSearch);
 
 // get related products
 // It will find the products based on req product category.
