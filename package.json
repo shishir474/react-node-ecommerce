@@ -1,0 +1,33 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "react-node-mongodb-ecommerce application",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "keywords": [
+    "react",
+    "mongodb",
+    "express",
+    "ecommerce"
+  ],
+  "author": "Shishir Singh",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-jwt": "^6.1.0",
+    "express-validator": "6.13.0",
+    "formidable": "^2.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.1.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15",
+    "uuid": "^8.3.2"
+  }
+}
