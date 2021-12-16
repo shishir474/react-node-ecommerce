@@ -36,21 +36,37 @@ const Search = () => {
 
     }
 
-    const searchForm = () => {
+    const searchForm = () => (
         <form onSubmit={searchSubmit}>
-            <input 
-                type="search"
-                onChange={handleChange('search')} 
-                className="form-control" 
-                placeholder="Search by name"
-            />
+            <span className="input-group-text">
+                <div className="input-group input-group-lg">
+                    <div className="input-group-prepend">
+                        <select className="btn mr-2" onChange={handleChange('category')}>
+                            <option value="All"> Pick category</option>
+                            {categories.map((c,i) => (<option key={i} value={c._id}> {c.name} </option>) )}
+                        </select>
+                    </div>
+
+                    <input 
+                        type="search"
+                        onChange={handleChange('search')} 
+                        className="form-control" 
+                        placeholder="Search by name"
+                    />
+                </div>
+                <div className="btn input-group-append" style={{border: 'none'}}>
+                    <button className="input-group-text"> Search </button>
+                </div>
+
+            </span>
+    
         </form>
-    }
+    );
 
     return (
         // <h2> Search bar </h2>
         <div className="row">
-            <div className="container">{searchForm()}</div>
+            <div className="container mb-3">{searchForm()}</div>
         </div>
     )
 }
