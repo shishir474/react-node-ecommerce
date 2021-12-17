@@ -40,21 +40,25 @@ const Home = () => {
     }, [])
    
     return (
-        <Layout title="Home Page" description="Node React E-commerce App" className="container-fluid">
+        <Layout title="FullStack React Node MongoDB Ecommerce App" description="Node React E-commerce App" className="container-fluid">
             <Search />
             
             <h2 className="mb-4"> New Arrivals </h2>
             <div className="row mb-4">
-                {productsByArrival && productsByArrival.map((product, i)=>{
-                    return <Card key={i} product={product}/>
-                })}
+                {productsByArrival && productsByArrival.map((product, i)=>(
+                    <div key={i} className="col-4 mb-3"> 
+                        <Card  product={product}/>
+                    </div>
+                ))}
             </div>
    
             <h2 className="mb-4"> Best Sellers </h2>
             <div className="row">
-                {productsBySell && productsBySell.map((product, i)=>{
-                    return <Card key={i} product={product}/>
-                })}
+                {productsBySell && productsBySell.map((product, i)=>(
+                    <div key={i} className="col-4 mb-3"> 
+                        <Card product={product}/>
+                    </div>   
+                ))}
             </div>
           
            

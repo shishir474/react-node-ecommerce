@@ -3,7 +3,7 @@ import { API } from "../config";
 
 const ShowImage = ({item, url}) => {
     return (
-        <div className="product-img">
+        <div className="product-img col-md-8 offset-md-2">
             <img 
                 src={`${API}/${url}/photo/${item._id}`} 
                 alt={item.name} 
