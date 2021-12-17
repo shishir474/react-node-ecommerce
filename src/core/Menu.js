@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { signout } from "../auth";
 import { isAuthenticated } from "../auth";
+import { itemTotal } from "./cartHelpers";
+
 
 const isActive = (history, path) => {
     if (history.location.pathname === path){
@@ -33,6 +35,16 @@ const Menu = ({history}) => {
                         style={isActive(history,'/shop')}
                     >
                           Shop 
+                    </Link>
+                </li>
+
+                <li className="nav-link">
+                    <Link 
+                        to="/cart" 
+                        className="nav-link" 
+                        style={isActive(history,'/cart')}
+                    >
+                          Cart <sup><small className="cart-badge">{itemTotal()}</small></sup>
                     </Link>
                 </li>
 
