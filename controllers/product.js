@@ -5,7 +5,9 @@ const _ = require('lodash');
 const {errorHandler} = require('../helpers/dbErrorHandlers');
 
 exports.productById = (req, res, next, id) => {
-  Product.findById(id).exec((err,product)=>{
+  Product.findById(id)
+  .populate('category')
+  .exec((err,product)=>{
       if (err){
         return res.status(400).json({
             error: 'product not found'
@@ -248,46 +250,5 @@ exports.listSearch = (req, res)=>{
         }
 
         res.json(products);
-    }).select('-photo');
+    }).populate('category').select('-photo');
 }
-
-
-
-
-
-
-// files {
-//     photo: PersistentFile {
-//       _events: [Object: null prototype] { error: [Function (anonymous)] },
-//       _eventsCount: 1,
-//       _maxListeners: undefined,
-//       lastModifiedDate: 2021-12-11T13:44:44.632Z,
-//       filepath: 'C:\\Users\\hp\\AppData\\Local\\Temp\\36a0e24e7e35143f294535e00',
-//       newFilename: '36a0e24e7e35143f294535e00',
-//       originalFilename: 'node2.jpg',
-//       mimetype: 'image/jpeg',
-//       hashAlgorithm: false,
-//       size: 8699,
-//       _writeStream: WriteStream {
-//         _writableState: [WritableState],
-//         _events: [Object: null prototype],
-//         _eventsCount: 1,
-//         _maxListeners: undefined,
-//         path: 'C:\\Users\\hp\\AppData\\Local\\Temp\\36a0e24e7e35143f294535e00',
-//         fd: 4,
-//         flags: 'w',
-//         mode: 438,
-//         start: undefined,
-//         autoClose: true,
-//         pos: undefined,
-//         bytesWritten: 8699,
-//         closed: false,
-//         [Symbol(kFs)]: [Object],
-//         [Symbol(kCapture)]: false,
-//         [Symbol(kIsPerformingIO)]: false
-//       },
-//       hash: null,
-//       [Symbol(kCapture)]: false
-//     }
-//   }
-  
