@@ -114,17 +114,7 @@ const Shop = () => {
         return array;
     }
 
-    const showFilteredProducts = () => {
-
-        return filteredProducts.length > 0 ? (
-                filteredProducts.map((product, i)=>(
-                    <div key={i} className="col-4 mb-3">
-                        <Card product={product}/>
-                    </div>
-                ))
-            ) : (<h2 className="text-muted"> No products found </h2>)
-  
-    }
+   
 
     return (
         <Layout title="Shop Page" description="Search and find books of your choice" className="container-fluid">
@@ -144,7 +134,12 @@ const Shop = () => {
                 <div className="col-9">
                    <h2 className="mb-4"> Products </h2>
                    <div className="row">
-                        {showFilteredProducts()}
+                   {filteredProducts && filteredProducts.map((product, i)=>(
+                        <div key={i} className="col-4 mb-3">
+                            <Card product={product}/>
+                        </div>
+                    ))}
+                      
                    </div>
                     <hr />
                    {loadMoreButton()}
