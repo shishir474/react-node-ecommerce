@@ -2,12 +2,13 @@ import React, {useState} from "react";
 import { Link, Redirect } from "react-router-dom"
 import ShowImage from "./ShowImage" 
 import moment from 'moment'
-import { addItem } from "./cartHelpers";
+import { addItem, updateItem } from "./cartHelpers";
 
 
-const Card = ({product, showViewProductButton = true, showAddToCartButton = true }) => {
+const Card = ({product, showViewProductButton = true, showAddToCartButton = true, cartUpdate = false }) => {
 
     const [redirect, setRedirect] = useState(false);
+    const [count, setCount] = useState(product.count);
 
     const showViewButton = showViewProductButton => {
         return showViewProductButton && (
@@ -44,6 +45,37 @@ const Card = ({product, showViewProductButton = true, showAddToCartButton = true
         )   
     }
 
+    const handleChange = productId => e => {
+        
+        setCount(e.target.value < 1 ? 1 : e.target.value )
+
+        if (e.target.value >= 1){
+            updateItem(productId, e.target.value);
+        }
+        
+    }
+
+    const cartUpdateOptions = cartUpdate => {
+        return cartUpdate && <div> 
+                <div className="input-group mb-3">
+                    
+                    <div className="input-group-prepend">
+                        <span className="input-group-text">
+                            Adjust Quantity
+                        </span>
+                    </div>
+
+                    <input 
+                        type="number" 
+                        className="form-control"   
+                        onChange={handleChange(product._id)} 
+                        value={count} 
+                    />
+
+                </div>
+             </div>
+    }
+
     
 
     return (
@@ -76,6 +108,8 @@ const Card = ({product, showViewProductButton = true, showAddToCartButton = true
                     {showViewButton(showViewProductButton)}
 
                     {showAddToCart(showAddToCartButton)}
+
+                    {cartUpdateOptions(cartUpdate)}
     
                     
                 </div>
