@@ -6,8 +6,9 @@ import Search from "./Search"
 import { isAuthenticated } from "../auth"
 import { Link } from "react-router-dom"
 import DropIn from 'braintree-web-drop-in-react'
+import { emptyCart } from "./cartHelpers"
 
-const Checkout = ({products}) => {
+const Checkout = ({products,setRun = f => f, run = undefined}) => {
 
     const [data, setData] = useState({
         success: false,
@@ -60,16 +61,19 @@ const Checkout = ({products}) => {
             nonce = data.nonce
             // once u have nonce (card type, card no.) send nonce as 'paymentMethodNonce' and also total to be charged
             // console.log('nonce and total amt: ', nonce, getTotal(products))
-
             const paymentData = {
                 paymentMethodNonce: nonce,
                 amount: getTotal(products)
             }
 
-            processPayment(userId, token, paymentData).then(response => {
+            processPayment(userId, token, paymentData)
+            .then(response => {
                 setData({...data, success: response.success})
                 // empty order
                 // create order: post req to backend to create order 
+                // clear the cart from the localstorage
+                emptyCart(() => console.log('empty the cart'));
+                setRun(!run); // run useEffect in parent Cart
             })
             .catch(err => console.log(err))
             
