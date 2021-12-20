@@ -11,6 +11,7 @@ import { emptyCart } from "./cartHelpers"
 const Checkout = ({products,setRun = f => f, run = undefined}) => {
 
     const [data, setData] = useState({
+        loading: false,
         success: false,
         clientToken: null,
         error: '',
@@ -55,6 +56,7 @@ const Checkout = ({products,setRun = f => f, run = undefined}) => {
     const buy = () => {
         // send the nonce to your server
         // nonce = data.instance.requestPaymentMethod()
+        setData({loading: true});
         let nonce;
         let getNonce = data.instance.requestPaymentMethod().then(data => {
            // console.log(data);
@@ -74,8 +76,12 @@ const Checkout = ({products,setRun = f => f, run = undefined}) => {
                 // clear the cart from the localstorage
                 emptyCart(() => console.log('empty the cart'));
                 setRun(!run); // run useEffect in parent Cart
+                setData({loading: false});
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                setData({loading: false});
+                console.log(err)
+            })
             
         })
         .catch(error => {
@@ -96,12 +102,17 @@ const Checkout = ({products,setRun = f => f, run = undefined}) => {
          </div>
      }
 
+    const showLoading = loading => loading && <h2>Loading...</h2>
+
     const showDropIn = () => (
         <div onBlur={() => setData({...data, error:''})}>
             {data.clientToken !== null && products.length > 0 ? (
                 <div>
                     <DropIn options={{
-                        authorization: data.clientToken
+                        authorization: data.clientToken,
+                        paypal:{
+                            flow: "vault"
+                        }
                     }} onInstance={instance => (data.instance = instance)} />
 
                     <button className="btn btn-success btn-block" onClick={buy}> Pay </button>
@@ -114,6 +125,7 @@ const Checkout = ({products,setRun = f => f, run = undefined}) => {
    return (
        <div>
            <h2> Total: ${getTotal()} </h2>
+           {showLoading(data.loading)}
            {showError(data.error)}
            {showSuccess(data.success)}
            {showCheckout()}
