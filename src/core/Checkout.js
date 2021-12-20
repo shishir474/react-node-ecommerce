@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import Layout from "./Layout"
-import { getProducts, getBraintreeClientToken, processPayment } from "./apiCore"
+import { getProducts, getBraintreeClientToken, processPayment, createOrder } from "./apiCore"
 import Card from "./Card"
 import Search from "./Search"
 import { isAuthenticated } from "../auth"
@@ -70,10 +70,21 @@ const Checkout = ({products,setRun = f => f, run = undefined}) => {
 
             processPayment(userId, token, paymentData)
             .then(response => {
+                console.log('processPayment response', response);
                 setData({...data, success: response.success})
                 // empty order
                 // create order: post req to backend to create order 
                 // clear the cart from the localstorage
+                
+                const createOrderData = {
+                    products: products,
+                    transaction_id: response.transaction.id,
+                    amount: response.transaction.amount,
+                    address: data.address
+                }
+
+                createOrder(userId, token, createOrderData);
+
                 emptyCart(() => console.log('empty the cart'));
                 setRun(!run); // run useEffect in parent Cart
                 setData({loading: false});
@@ -104,10 +115,24 @@ const Checkout = ({products,setRun = f => f, run = undefined}) => {
 
     const showLoading = loading => loading && <h2>Loading...</h2>
 
+    const handleAddress = e => {
+        setData({...data, address: e.target.value})
+    }
+
     const showDropIn = () => (
         <div onBlur={() => setData({...data, error:''})}>
             {data.clientToken !== null && products.length > 0 ? (
                 <div>
+                    <div className="form-group mb-3">
+                        <label className="text-muted"> Delivery Address: </label>
+                        <textarea 
+                            onChange={handleAddress} 
+                            className="form-control" 
+                            value={data.address} 
+                            placeholder="Type your delivery address here..."
+                        />
+                    </div>
+
                     <DropIn options={{
                         authorization: data.clientToken,
                         paypal:{
