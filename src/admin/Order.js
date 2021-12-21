@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 import Layout from "../core/Layout";
 import { listOrders } from "./apiAdmin";
+import moment from "moment";
 
 const Order = () => {
     const [orders, setOrders] = useState([]);
@@ -25,9 +26,27 @@ const Order = () => {
       loadOrders();
     }, [])
 
-    const noOrders = (orders) => {
-        return orders.length < 1 ? <h2> No Orders...</h2> : null;
+    const showOrdersLength = () => {
+        if (orders.length > 0){
+            return (
+                <h2 className="text-danger display-2"> Total Orders: {orders.length} </h2>
+            )
+        }
+        else{
+            return <h2 className="text-danger"> No Orders...</h2>
+        }
+      
     }
+
+    const showInput = (key, value) => (
+        <div className="input-group mb-2 mr-sm-2">
+            <div className="input-group-prepend">
+                <div className="input-group-text"> {key} </div>
+            </div>
+
+            <input type="text" value={value} className="form-control" readOnly/>
+        </div>
+    )
 
     return (
         <Layout 
@@ -36,8 +55,53 @@ const Order = () => {
         >        
               <div className="row">
                 <div className="col-md-8 offset-md-2"> 
-                    {noOrders(orders)}
-                    {JSON.stringify(orders)}
+                    {showOrdersLength()}
+
+                    {orders.map((order, oIndex) => {
+                        return (
+                            <div className="mt-5" key={oIndex} style={{borderBottom : '5px solid indigo'}}>
+                                <h2 className="mb-5">
+                                   <span className=" bg-primary"> Order Id: {order._id} </span> 
+                                </h2>
+
+                                <ul className="list-group mb-2">
+                                    <li className="list-group-item">
+                                        Status: {order.status}
+                                    </li>
+                                    <li className="list-group-item">
+                                        Transaction Id: {order.transaction_id}
+                                    </li>
+                                    <li className="list-group-item">
+                                        Amount: ${order.amount}
+                                    </li>
+                                    <li className="list-group-item">
+                                        <span style={{textTransform: 'capitalize'}}> Ordered By: {order.user.name} </span>
+                                    </li>
+                                    <li className="list-group-item">
+                                        Ordered on: {moment(order.createdAt).fromNow()}
+                                    </li>
+                                    <li className="list-group-item">
+                                        Delivary Address: {order.address}
+                                    </li>
+                                </ul>
+
+                                <h3 className="mt-4 mb-4 font-italic">
+                                    Total products in the order: {order.products.length}
+                                </h3>
+
+                                {order.products.map((product, pIndex) => (
+                                    <div className="mb-4" key={pIndex} style={{padding: '20px', border: '1px solid indigo'}}>
+                                        {showInput('Product Name', product.name)}
+                                        {showInput('Price', product.price)}
+                                        {showInput('Count', product.count)}
+                                        {showInput('Product Id', product._id)}
+                                    </div>
+                                ))}
+
+                            </div>
+
+                        )
+                    })}
                     
                 </div>
             </div>
