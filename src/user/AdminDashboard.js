@@ -4,7 +4,7 @@ import { isAuthenticated } from "../auth";
 import Layout from "../core/Layout";
 
 const AdminDashboard = () => {
-    const {user: {name,email,role}} = isAuthenticated();
+    const {user: {_id,name,email,role}} = isAuthenticated();
    
     const adminLinks = () => {
         return (
@@ -19,6 +19,9 @@ const AdminDashboard = () => {
                     </li>
                     <li className="list-group-item">
                         <Link className="nav-link" to="/admin/orders"> View Orders </Link>
+                    </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to={`/profile/${_id}`} > Update Profile </Link>
                     </li>
                 </ul>
 
