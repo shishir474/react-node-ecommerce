@@ -23,7 +23,7 @@ exports.create = (req, res) => {
 exports.listOrders = (req, res) => {
   Order.find()
       .populate('user', '_id name address')
-      .sort('createdAt')
+      .sort('-createdAt')
       .exec((error, data) => {
             if (error){
               return res.status(400).json({
@@ -34,4 +34,8 @@ exports.listOrders = (req, res) => {
           return res.status(200).json(data);
   })
 
+}
+
+exports.getStatusValues = (req, res) => {
+  return res.status(200).json(Order.schema.path('status').enumValues);
 }
