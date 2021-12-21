@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 import Layout from "../core/Layout";
-import { listOrders } from "./apiAdmin";
+import { listOrders, getStatusValues } from "./apiAdmin";
 import moment from "moment";
 
 const Order = () => {
     const [orders, setOrders] = useState([]);
+    const [statusValues, setStatusValues] = useState([]);
     
     const {user, token} = isAuthenticated();
 
@@ -16,14 +17,28 @@ const Order = () => {
                 console.log(data.error);
             }
             else{
-                console.log(data);
+                //console.log(data);
                 setOrders(data)
+            }
+        })
+    }
+
+    
+    const loadStatusValues = () => {
+        getStatusValues(user._id, token).then(data => {
+            if (data.error){
+                console.log(data.error);
+            }
+            else{
+                //console.log(data);
+                setStatusValues(data)
             }
         })
     }
 
     useEffect(() => {
       loadOrders();
+      loadStatusValues();
     }, [])
 
     const showOrdersLength = () => {
@@ -48,6 +63,26 @@ const Order = () => {
         </div>
     )
 
+    const handleStatusChange = (e, o) => {
+        console.log('Update status')
+    }
+
+    const showStatus = (o) => (
+        <div className="form-group">
+            <h3 className="mark mb-4"> Status: {o.status}</h3>
+            <select 
+                className="form-control"    
+                onChange={e => handleStatusChange(e, o._id)} 
+            >
+                <option> Update Status </option>
+                {statusValues.map((status, index) => (
+                    <option key={index} value={status}> {status} </option>)
+                )}
+
+            </select>
+        </div>
+    ) 
+
     return (
         <Layout 
             title="Orders" 
@@ -66,7 +101,7 @@ const Order = () => {
 
                                 <ul className="list-group mb-2">
                                     <li className="list-group-item">
-                                        Status: {order.status}
+                                        {showStatus(order)}
                                     </li>
                                     <li className="list-group-item">
                                         Transaction Id: {order.transaction_id}
@@ -102,6 +137,8 @@ const Order = () => {
 
                         )
                     })}
+
+                   
                     
                 </div>
             </div>
