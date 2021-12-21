@@ -18,3 +18,20 @@ exports.create = (req, res) => {
 
     })
 }
+
+// list all Orders
+exports.listOrders = (req, res) => {
+  Order.find()
+      .populate('user', '_id name address')
+      .sort('createdAt')
+      .exec((err, data) => {
+            if (err){
+              return res.status(400).json({
+                error: errorHandler(err)
+              });
+          }
+
+          return res.status(200).json(data);
+  })
+
+}
