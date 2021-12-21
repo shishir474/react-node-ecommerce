@@ -9,7 +9,7 @@ const {decreaseQuantity } = require('../controllers/product');
 router.post('/order/create/:userId', requireSignin, isAuth, addOrderToUserHistory, decreaseQuantity,  create);
 
 // list orders
-router.get('/orders/list/:userId', requireSignin, isAuth, isAdmin, listOrders);
+router.get('/order/list/:userId', requireSignin, isAuth, isAdmin, listOrders);
 
 router.param('userId', userById);
 
