@@ -53,6 +53,8 @@ const Checkout = ({products,setRun = f => f, run = undefined}) => {
          )
     }
     
+    let deliveryAddress = data.address;
+
     const buy = () => {
         // send the nonce to your server
         // nonce = data.instance.requestPaymentMethod()
@@ -78,7 +80,7 @@ const Checkout = ({products,setRun = f => f, run = undefined}) => {
                             products: products,
                             transaction_id: response.transaction.id,
                             amount: response.transaction.amount,
-                            address: data.address
+                            address: deliveryAddress
                         };
 
                         createOrder(userId, token, createOrderData)
@@ -115,11 +117,11 @@ const Checkout = ({products,setRun = f => f, run = undefined}) => {
         </div>
     )
 
-    const showSuccess = success => {
-        return <div className="alert alert-info" style={{display: success ? '' : 'none'}}> 
-             Thanks! Your payment was successfull.
+    const showSuccess = success => (
+        <div className="alert alert-info" style={{display: success ? '' : 'none'}}> 
+             Thanks! Your payment was successful.
          </div>
-     }
+     )
 
     const showLoading = loading => loading && <h2 className="alert alert-danger">Loading...</h2>
 
