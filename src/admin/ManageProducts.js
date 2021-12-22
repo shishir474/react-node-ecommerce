@@ -38,6 +38,8 @@ const ManageProducts = () => {
         <Layout title="Manage Products" description="Perform CRUD on products" className="container-fluid">
             <div className="row">
                 <div className="col-12">
+                    <h2 className="text-center"> Total {products.length} products </h2>
+                    <hr />
                     <ul className="list-group">
                       {products.map((p,i) => (
                             <li key={i} className="list-group-item d-flex justify-content-between align-items-center">
@@ -47,11 +49,9 @@ const ManageProducts = () => {
                                         Update
                                     </span>
                                 </Link>
-                                <button className="d-inline">
-                                    <span onClick={() => destroy(p._id)} className="badge badge-danger badge-pill">
-                                            Delete
-                                    </span>
-                                </button>
+                                <span onClick={() => destroy(p._id)} className="badge badge-danger badge-pill">
+                                        Delete
+                                </span>
                           
                             </li>
                       ))}

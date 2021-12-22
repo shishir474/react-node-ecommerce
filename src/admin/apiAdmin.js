@@ -94,9 +94,9 @@ export const updateOrderStatus = (userId, token, orderId, status) => {
 * delete single product
 */
 
-// get all products
+// get all products. set limit to undefined so that admin can see all the products
 export const getProducts = () => {
-    return fetch(`${API}/products`,{
+    return fetch(`${API}/products?limit=100`,{
         method: "GET",
     }).then(response => {
         return response.json();
