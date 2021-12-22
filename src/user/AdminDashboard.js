@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
@@ -19,6 +20,9 @@ const AdminDashboard = () => {
                     </li>
                     <li className="list-group-item">
                         <Link className="nav-link" to="/admin/orders"> View Orders </Link>
+                    </li>
+                    <li className="list-group-item">
+                        <Link className="nav-link" to="/admin/products"> Manage Products </Link>
                     </li>
                     <li className="list-group-item">
                         <Link className="nav-link" to={`/profile/${_id}`} > Update Profile </Link>
@@ -48,6 +52,7 @@ const AdminDashboard = () => {
                 <div className="col-3"> {adminLinks()} </div>     
                 <div className="col-9">
                     {adminInfo()}
+                    {<Link to="/user/dashboard" className="text-warning"> User Dashboard </Link>}
                 </div>
             </div>
           
