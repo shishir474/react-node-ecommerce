@@ -95,13 +95,6 @@ exports.update = (req, res) => {
             });
         }
 
-        const {name,description,price,quantity,shipping,category} = fields;
-        if (!name || !description || !price || !quantity || !shipping || !category){
-              return res.status(400).json({
-                  error: 'All fields are required'
-              })
-        }
-        
         let product = req.product;
         // updating product using extend method provided by lodash
         product = _.extend(product, fields);
